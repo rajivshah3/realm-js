@@ -56,6 +56,9 @@ inline const char *jsc::Value::typeof(JSContextRef ctx, const JSValueRef &value)
 template<>
 inline bool jsc::Value::is_array(JSContextRef ctx, const JSValueRef &value) {
     // JSValueIsArray() is not available until iOS 9.
+    if (__builtin_available(iOS 9, *)) {
+        return JSValueIsArray(ctx, value);
+    }
     static const jsc::String type = "Array";
     return is_object_of_type(ctx, value, type);
 }
@@ -68,6 +71,10 @@ inline bool jsc::Value::is_array_buffer(JSContextRef ctx, const JSValueRef &valu
 
 template<>
 inline bool jsc::Value::is_date(JSContextRef ctx, const JSValueRef &value) {
+    // JSValueIsDate() is not available until iOS 9.
+    if (__builtin_available(iOS 9, *)) {
+        return JSValueIsDate(ctx, value);
+    }
     static const jsc::String type = "Date";
     return is_object_of_type(ctx, value, type);
 }
